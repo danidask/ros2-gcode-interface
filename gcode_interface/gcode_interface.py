@@ -4,11 +4,13 @@ from std_msgs.msg import String
 from geometry_msgs.msg import Point
 from .gcode_serial import Gcode
 
+NODE_NAME = 'gcode_interface'
 
 class GcodeInterface(Node):
 
     def __init__(self):
-        super().__init__('gcode_interface')
+        super().__init__(NODE_NAME)
+        self.get_logger().info(f"{NODE_NAME} started")
         self.gcode_sub = self.create_subscription(Point, 'gcode_pose', self.listener_callback, 10)
         # self.publisher_ = self.create_publisher(String, 'topic', 10)
         # timer_period = 0.5  # seconds
@@ -31,6 +33,7 @@ class GcodeInterface(Node):
     def stop(self):
         # self.gcode_sub.unregister()
         self.gcode.stop()
+        self.get_logger().info(f"{NODE_NAME} stopped")
 
 
 def main(args=None):
